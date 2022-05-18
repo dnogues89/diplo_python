@@ -14,6 +14,9 @@ def edad():
     cumple_inv = [0]
     for i in range(1, age + 1):
         cumples += [i]
+        cumple_inv.insert(0, i)
+
+    cumple_inv.pop(age)
 
     return f"{cumples}\n{cumple_inv}"
 
