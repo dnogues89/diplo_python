@@ -9,3 +9,4 @@ lista_a_ordenar = [3, 44, 21, 78, 5, 56, 9]
 lista_a_ordenar.sort()
 
 print(lista_a_ordenar)
+
