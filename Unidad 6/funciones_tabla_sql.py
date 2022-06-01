@@ -1,4 +1,3 @@
-from os import curdir
 import sqlite3
 
 
@@ -45,7 +44,7 @@ def seleccionar(con, mi_id):
     cursor.execute(sql, data)
 
     rows = cursor.fetchall()
-
+    print(type(rows))
     for row in rows:
         print(row)
 
