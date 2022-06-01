@@ -7,7 +7,9 @@ canvas.pack(expand=YES, fill=BOTH)
 ########################################################
 # Agregar imagen
 ########################################################
-photo = PhotoImage(file="img/pera.gif")
+photo = PhotoImage(
+    file="/Users/dnogues/Desktop/UTN/diplo_python/M2 U1 - Unidad 5/ejercicios_u5/img/pera.gif"
+)
 canvas.create_image(0, 0, image=photo, anchor=NW)
 
 ########################################################
