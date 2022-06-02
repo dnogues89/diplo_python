@@ -1,4 +1,3 @@
-from cgitb import text
 from tkinter import *
 import random
 import ambc
@@ -14,7 +13,7 @@ window = Tk()
 window.title("Ejercicio Desafio")
 
 label_pretitulo = Label(window, text="Ingrese sus datos", bg="pink")
-label_pretitulo.grid(row=0, column=1)
+label_pretitulo.grid(row=0, column=0, columnspan=3, sticky=W + E)
 
 label_titulo = Label(window, text="Titulo")
 label_titulo.grid(row=2, column=0, sticky=W)
@@ -65,6 +64,7 @@ def sorpresa():
     label_pretitulo.configure(bg=color)
     label_ruta.configure(bg=color)
     label_titulo.configure(bg=color)
+    label_id.configure(bg=color)
     but_alta.configure(bg=color)
     but_sorpresa.configure(bg=color)
 
@@ -117,7 +117,7 @@ tree.heading("col2", text="Ruta")
 tree.heading("col3", text="Descripcion")
 
 
-tree.grid(column=0, row=6, columnspan=5)
+tree.grid(column=0, row=7, columnspan=5)
 
 # TREE ===================================
 

@@ -26,6 +26,3 @@ def consulta(id):
     cursor.execute(sql, data)
     info = cursor.fetchall()
     return info
-
-
-print(consulta(9)[0][1])
