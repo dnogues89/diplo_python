@@ -1,4 +1,6 @@
+from cgitb import reset
 import sqlite3
+from statistics import mode
 from tkinter import *
 from tkinter import ttk
 from tkinter.messagebox import *
@@ -6,71 +8,93 @@ from tkinter.messagebox import *
 import datetime
 
 mes = datetime.date.today()
-print(mes.month)
 
 
 def conexion():
     con = sqlite3.connect("mi_proyecto.db")
+
     return con
 
 
 def nueva_tabla():
     con = conexion()
     cursor = con.cursor()
-    sql = "CREATE TABLE listaprecios IF NOT EXIST(codigo INTEGER PRIMARY KEY AUTOINCREMENT,modelo,lista real,venta real)"
+    sql = "CREATE TABLE IF NOT EXISTS listaprecios(codigo INTEGER PRIMARY KEY,modelo,lista real,venta real)"
     cursor.execute(sql)
     con.commit()
 
 
 # ==========MODELO==========
-def alta(ecodigo, emodelo, elista, eventa):
+def alta(ecodigo, emodelo, elista, eventa, tree, v_modelo):
     con = conexion()
     cursor = con.cursor()
-    data = (emodelo.get(), elista.get(), eventa.get())
-    sql = "INSERT INTO listaprecios(modelo, lista,venta) VALUES (?,?,?)"
+    data = (ecodigo.get(), emodelo.get(), elista.get(), eventa.get())
+    sql = "INSERT INTO listaprecios(codigo, modelo, lista,venta) VALUES (?,?,?,?)"
     cursor.execute(sql, data)
     con.commit()
+    actualizar_treeview(tree)
 
 
-def baja(ecodigo):
+def baja(tree):
+    eliminar = tree.selection()
+    item = tree.item(eliminar)
+    codigo = item["text"]
+
     con = conexion()
     cursor = con.cursor()
-    data = (ecodigo.get(),)
+    data = (codigo,)
     sql = "DELETE FROM listaprecios WHERE codigo = ?"
     cursor.execute(sql, data)
     con.commit()
+    actualizar_treeview(tree)
 
 
-def modificar():
-    pass
+def modificar(ecodigo, emodelo, elista, eventa, tree):
+    consulta = tree.selection()
+    item = tree.item(consulta)
+    codigo = item["text"]
+
+    if askyesno("Continuar", "Desea modificar el codigo " + str(codigo)):
+        con = conexion()
+        cursor = con.cursor()
+        data = (emodelo.get(), elista.get(), eventa.get(), codigo)
+        sql = "UPDATE listaprecios SET modelo=?, lista=?, venta=? WHERE codigo=?;"
+        cursor.execute(sql, data)
+        con.commit()
+        actualizar_treeview(tree)
 
 
-def consulta (ecodigo.get()):
+def consulta(tree):
+    consulta = tree.selection()
+    item = tree.item(consulta)
+    codigo = item["text"]
+    modelo = item["values"][0]
+    precio_lista = item["values"][1]
+    precio_venta = item["values"][2]
+
+    showinfo(
+        title=f"Margen {modelo}",
+        message=f"El margen de {modelo} es {round((float(precio_venta)/float(precio_lista)-1)*100,0)}%",
+    )
+
+
+def actualizar_treeview(mitreview):
+    records = mitreview.get_children()
+    for element in records:
+        mitreview.delete(element)
+
+    sql = "SELECT * FROM listaprecios ORDER BY Codigo ASC"
     con = conexion()
     cursor = con.cursor()
-    data = (ecodigo,)
-    sql = "SELECT * FROM listaprecios WHERE codigo=?"
-    cursor.execute(sql,data)
-    info = cursor.fetchall(sql,data)
-    print (type(info))
-    print (info)
+    datos = cursor.execute(sql)
 
-    
-
-
-"""
-    margen = (
-        f"El Margen de {modelo} para la lista vigente es de: {round(venta/lista,0)}%"
-    )
-    showinfo(margen)
-    pass
-"""
-def load_treeview():pass
-
+    resultado = datos.fetchall()
+    for fila in resultado:
+        mitreview.insert("", 0, text=fila[0], values=(fila[1], fila[2], fila[3]))
 
 
 window = Tk()
-
+nueva_tabla()
 
 # ==========VISTA==========
 window.title("Lista de precios para mes: " + str(mes.month))
@@ -99,6 +123,7 @@ v_codigo, v_modelo, v_lista, v_venta, v_margen = (
 
 ecodigo = Entry(window, textvariable=v_codigo, width=5)
 ecodigo.grid(row=1, column=3, sticky=W)
+ecodigo.setvar
 
 emodelo = Entry(window, textvariable=v_modelo)
 emodelo.grid(row=2, column=3, sticky=W)
@@ -109,33 +134,14 @@ elista.grid(row=1, column=5, sticky=W)
 eventa = Entry(window, textvariable=v_venta)
 eventa.grid(row=2, column=5, sticky=W)
 
-# ==========Botones==========
-
-balta = Button(
-    window, text="Alta", command=lambda: alta(ecodigo, emodelo, elista, eventa)
-)
-balta.grid(row=3, column=2)
-
-bbaja = Button(window, text="Baja", command=lambda: baja(ecodigo))
-bbaja.grid(row=3, column=3)
-
-bmodificar = Button(
-    window,
-    text="Modificar",
-    command=lambda: modificar(ecodigo, emodelo, elista, eventa),
-)
-bmodificar.grid(row=3, column=4)
-
-bconsulta = Button(window, text="Consulta", command=lambda: consulta(ecodigo))
-bconsulta.grid(row=3, column=5)
-
 # ========== TREEVIEW ==========
 tree = ttk.Treeview(window)
 tree["columns"] = ("col1", "col2", "col3")
-tree.column("#0", width=50)
-tree.column("col1", width=200)
-tree.column("col2", width=200)
-tree.column("col3", width=200)
+tree.column("#0", width=50, anchor="c")
+tree.column("col1", width=200, anchor="c")
+tree.column("col2", width=200, anchor="c")
+tree.column("col3", width=200, anchor="c")
+
 
 tree.heading("#0", text="ID")
 tree.heading("col1", text="Modelo")
@@ -143,6 +149,29 @@ tree.heading("col2", text="$ Lista")
 tree.heading("col3", text="$ Venta")
 
 tree.grid(row=4, column=1, columnspan=5)
+
+actualizar_treeview(tree)
+# ==========Botones==========
+
+balta = Button(
+    window,
+    text="Alta",
+    command=lambda: alta(ecodigo, emodelo, elista, eventa, tree, v_modelo),
+)
+balta.grid(row=3, column=2)
+
+bbaja = Button(window, text="Baja", command=lambda: baja(tree))
+bbaja.grid(row=3, column=3)
+
+bmodificar = Button(
+    window,
+    text="Modificar",
+    command=lambda: modificar(ecodigo, emodelo, elista, eventa, tree),
+)
+bmodificar.grid(row=3, column=4)
+
+bconsulta = Button(window, text="Consulta", command=lambda: consulta(tree))
+bconsulta.grid(row=3, column=5)
 
 
 window.mainloop()
