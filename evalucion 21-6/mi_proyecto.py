@@ -1,17 +1,23 @@
-from cgitb import reset
 import sqlite3
-from statistics import mode
 from tkinter import *
 from tkinter import ttk
+from tkinter import messagebox
 from tkinter.messagebox import *
-
 import datetime
+import os
+import re
 
-mes = datetime.date.today()
+# Intentar agregarle color por margen.
+# Falta hacer un validador de 1 campo
+# Intentar transformarla en un ejecutable.
+
+BASE_DIR = os.path.dirname((os.path.abspath(__file__)))
+
+today = datetime.date.today()
 
 
 def conexion():
-    con = sqlite3.connect("mi_proyecto.db")
+    con = sqlite3.connect(os.path.join(BASE_DIR, "mi_proyecto.db"))
 
     return con
 
@@ -25,14 +31,22 @@ def nueva_tabla():
 
 
 # ==========MODELO==========
-def alta(ecodigo, emodelo, elista, eventa, tree, v_modelo):
-    con = conexion()
-    cursor = con.cursor()
-    data = (ecodigo.get(), emodelo.get(), elista.get(), eventa.get())
-    sql = "INSERT INTO listaprecios(codigo, modelo, lista,venta) VALUES (?,?,?,?)"
-    cursor.execute(sql, data)
-    con.commit()
-    actualizar_treeview(tree)
+def alta(ecodigo, emodelo, elista, eventa, tree):
+    patron = "[0-9]+"
+
+    if re.match(patron, ecodigo.get()):
+        con = conexion()
+        cursor = con.cursor()
+        data = (int(ecodigo.get()), emodelo.get(), elista.get(), eventa.get())
+        sql = "INSERT INTO listaprecios(codigo, modelo, lista,venta) VALUES (?,?,?,?)"
+        cursor.execute(sql, data)
+        con.commit()
+        actualizar_treeview(tree)
+
+    else:
+        messagebox.showerror(
+            title="Error en el codigo", message="El codigo solo debe contener Numeros"
+        )
 
 
 def baja(tree):
@@ -97,9 +111,11 @@ window = Tk()
 nueva_tabla()
 
 # ==========VISTA==========
-window.title("Lista de precios para mes: " + str(mes.month))
+window.title("Lista de precios para mes: " + str(today.month) + "/" + str(today.year))
 
 # ==========Labels=========
+# Intento de regex
+parametros = "[0-9]"
 lcodigo = Label(window, text="Código")
 lcodigo.grid(row=1, column=2, sticky=E)
 
@@ -121,9 +137,10 @@ v_codigo, v_modelo, v_lista, v_venta, v_margen = (
     DoubleVar(),
 )
 
+
 ecodigo = Entry(window, textvariable=v_codigo, width=5)
 ecodigo.grid(row=1, column=3, sticky=W)
-ecodigo.setvar
+
 
 emodelo = Entry(window, textvariable=v_modelo)
 emodelo.grid(row=2, column=3, sticky=W)
@@ -156,7 +173,7 @@ actualizar_treeview(tree)
 balta = Button(
     window,
     text="Alta",
-    command=lambda: alta(ecodigo, emodelo, elista, eventa, tree, v_modelo),
+    command=lambda: alta(ecodigo, emodelo, elista, eventa, tree),
 )
 balta.grid(row=3, column=2)
 
