@@ -1,5 +1,4 @@
 from peewee import *
-from vista import Visual
 import re
 
 try:
@@ -45,12 +44,3 @@ class Repositorio:
             lista.append([row.id, row.modelo, row.cantidad])
 
         return lista
-
-
-if __name__ == "__main__":
-    pass
-# producto = Stock()
-# amarok = Producto()
-# amarok.alta("Amarok", 15)
-# amarok.baja(1)
-# amarok.consulta()
