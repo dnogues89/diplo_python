@@ -1,3 +1,4 @@
+from multiprocessing.sharedctypes import Value
 from .vista import Visual
 from .modelo import Repositorio
 import re
@@ -17,7 +18,10 @@ class Aplicacion:
                 modelo, cantidad = input(
                     "Ingresar Modelo y cantidad (Separado con un Espacio): "
                 ).split(" ")    
-                self.repositorio.alta(modelo, int(cantidad))
+                try:
+                    self.repositorio.alta(modelo, int(cantidad))
+                except ValueError:
+                    print("hubo error")
                 return True
 
             if opcion == 2:
