@@ -25,15 +25,13 @@ class Aplicacion:
                 return True
 
             if opcion == 2:
-                lista = self.repositorio.consulta()
-                self.vista.lista(lista)
+                self._mostrar_stock_completo()
                 id = int(input("Ingresar el ID del producto a eliminar. "))
                 self.repositorio.baja(id)
                 return True
 
             if opcion == 3:
-                lista = self.repositorio.consulta()
-                self.vista.lista(lista)
+                self._mostrar_stock_completo()
                 return True
 
             if opcion == 4:
@@ -54,6 +52,10 @@ class Aplicacion:
 
         print("El numero ingresado es incorrecto")
         return True
+    
+    def _mostrar_stock_completo(self):
+        lista = self.repositorio.consulta()
+        self.vista.lista(lista)
 
 
 if __name__ == "__main__":
