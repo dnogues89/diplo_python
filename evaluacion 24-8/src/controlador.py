@@ -35,15 +35,13 @@ class Aplicacion:
                 return True
 
             if opcion == 4:
-                lista = self.repositorio.consulta()
-                self.vista.lista(lista)
+                self._mostrar_stock_completo()
                 id, modelo, cantidad = input(
                     "Ingresar ID a moificar Modelo y cantidad (Separado con un Espacio): "
                 ).split(" ")
                 self.repositorio.modificar(int(id), modelo, int(cantidad))
                 print("Modificacion realizada con exito")
-                lista = self.repositorio.consulta()
-                self.vista.lista(lista)
+                self._mostrar_stock_completo()
                 return True
 
             if opcion == 5:
