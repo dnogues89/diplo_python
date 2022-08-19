@@ -29,6 +29,7 @@ class TestController(unittest.TestCase):
         data_de_stock = [1, "abc", 123]
         repositorio = RepositorioMock(stubbed_data=data_de_stock)
         app = controlador.Aplicacion(visual=visual, repositorio=repositorio)
-        app.run()
+        return_value = app.run()
         self.assertTrue(visual.lista_fue_invocado)
         self.assertEqual(visual.lista_lista_recibida, data_de_stock)
+        self.assertTrue(return_value)
