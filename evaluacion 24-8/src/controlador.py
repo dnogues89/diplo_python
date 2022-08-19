@@ -21,7 +21,7 @@ class Aplicacion:
                 try:
                     self.repositorio.alta(modelo, int(cantidad))
                 except ValueError:
-                    print("hubo error")
+                    self.vista.mostrar_error()
                 return True
 
             if opcion == 2:

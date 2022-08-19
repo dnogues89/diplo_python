@@ -1,3 +1,5 @@
+import os
+
 class Visual:
     def menu(self):
         print("\n\n")
@@ -26,6 +28,9 @@ class Visual:
         print("Cerrando APP")
         print("BYE")
 
+    def mostrar_error(self):
+        os.system("clear")
+        print("Hubo un problema en el ingreso de datos")
 
 if __name__ == "__main__":
     pass
