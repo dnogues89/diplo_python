@@ -4,9 +4,9 @@ import re
 
 
 class Aplicacion:
-    def __init__(self):
-        self.vista = Visual()
-        self.repositorio = Repositorio()
+    def __init__(self, visual: Visual, repositorio: Repositorio):
+        self.vista = visual
+        self.repositorio = repositorio
 
 
     def run(self):
