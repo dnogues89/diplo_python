@@ -1,5 +1,5 @@
 class Visual:
-    def menu():
+    def menu(self):
         print("\n\n")
         print("#" * 20 + " MENU " + "#" * 20)
         print("1 - Cargar Producto")
@@ -12,7 +12,7 @@ class Visual:
         print("\n\n")
         return int(opcion)
 
-    def lista(lista):
+    def lista(self, lista):
         print("\n\n")
         print("*" * 20 + "  -BASE DE DATOS-  " + "*" * 20)
         print("{:<8} {:<15} {:<10}".format("Id", "Modelo", "Cantidad"))
@@ -22,7 +22,7 @@ class Visual:
         print("*" * 20 + "  -BASE DE DATOS-  " + "*" * 20)
         print("\n\n")
 
-    def exit():
+    def exit(self):
         print("Cerrando APP")
         print("BYE")
 
