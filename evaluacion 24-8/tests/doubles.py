@@ -4,6 +4,7 @@ class VistaMock:
         self.mostrar_error_fue_invocado = False
         self.lista_lista_recibida = None
         self.lista_fue_invocado = False
+        self.exit_fue_invocado = False
 
     def menu(self):
         return self.value
@@ -14,6 +15,9 @@ class VistaMock:
     def lista(self, lista):
         self.lista_lista_recibida = lista
         self.lista_fue_invocado = True
+    
+    def exit(self):
+        self.exit_fue_invocado = True
 
 class RepositorioSpy:
     def __init__(self):
