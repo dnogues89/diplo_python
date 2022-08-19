@@ -16,7 +16,7 @@ class Aplicacion:
             if opcion == 1:
                 modelo, cantidad = input(
                     "Ingresar Modelo y cantidad (Separado con un Espacio): "
-                ).split(" ")
+                ).split(" ")    
                 self.repositorio.alta(modelo, int(cantidad))
                 return True
 
