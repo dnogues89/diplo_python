@@ -47,7 +47,23 @@ class TestController(unittest.TestCase):
         self.assertTrue(app.run())
         self.assertTrue(visual.lista_fue_invocado)
         self.assertEqual(visual.lista_lista_recibida, data_de_stock)
-        
+    
+    @patch('builtins.input', lambda *args: '1 ABC 123')
+    def test_option4_devuelve_toda_la_informacion_de_base_de_datos_a_la_vista_dos_veces(self):
+        visual = VistaMock(menu_value=4)
+        repositorio = RepositorioMock()
+        app = controlador.Aplicacion(visual=visual, repositorio=repositorio)
+        self.assertTrue(app.run())
+        self.assertTrue(visual.lista_fue_invocado)
+        self.assertEqual(visual.lista_fue_invocado_veces, 2)
+    
+    @patch('builtins.input', lambda *args: '1 ABC 123')
+    def test_option4_al_ingresar_id_modelo_cantidad_se_modifica_en_repositorio(self):
+        visual = VistaMock(menu_value=4)
+        repositorio = RepositorioMock()
+        app = controlador.Aplicacion(visual=visual, repositorio=repositorio)
+        self.assertTrue(app.run())
+        self.assertTrue(repositorio.modificar_fue_invocado)
 
     def test_option5_devuelve_false_y_le_avisa_a_la_vista_su_salida(self):
         vista = VistaMock(menu_value=5)
