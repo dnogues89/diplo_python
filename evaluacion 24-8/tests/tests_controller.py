@@ -66,12 +66,12 @@ class TestController(unittest.TestCase):
         self.assertTrue(repositorio.modificar_fue_invocado)
 
     @patch('builtins.input', lambda *args: '1')
-    def test_option4_al_ingresar_mal_la_info_de_stock_existente_devuelve_error(self):
-        visual = VistaMock(menu_value=4)
+    def test_option4_al_ingresar_mal_la_info_de_stock_deberia_avisar_a_la_vista_que_hubo_error(self):
+        vista = VistaMock(menu_value=4)
         repositorio = RepositorioMock()
-        app = controlador.Aplicacion(visual=visual, repositorio=repositorio)
-        with self.assertRaises(ValueError):
-            self.assertTrue(app.run())
+        app = controlador.Aplicacion(visual=vista, repositorio=repositorio)
+        self.assertTrue(app.run())
+        self.assertTrue(vista.mostrar_error_fue_invocado)
 
     def test_option5_devuelve_false_y_le_avisa_a_la_vista_su_salida(self):
         vista = VistaMock(menu_value=5)

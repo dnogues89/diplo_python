@@ -9,7 +9,6 @@ class Aplicacion:
         self.vista = visual
         self.repositorio = repositorio
 
-
     def run(self):
         patron = "[0-9]+"
         opcion = self.vista.menu()
@@ -36,12 +35,15 @@ class Aplicacion:
 
             if opcion == 4:
                 self._mostrar_stock_completo()
-                id, modelo, cantidad = input(
-                    "Ingresar ID a moificar Modelo y cantidad (Separado con un Espacio): "
-                ).split(" ")
-                self.repositorio.modificar(int(id), modelo, int(cantidad))
-                print("Modificacion realizada con exito")
-                self._mostrar_stock_completo()
+                try:
+                    id, modelo, cantidad = input(
+                        "Ingresar ID a moificar Modelo y cantidad (Separado con un Espacio): "
+                    ).split(" ")
+                    self.repositorio.modificar(int(id), modelo, int(cantidad))
+                    print("Modificacion realizada con exito")
+                    self._mostrar_stock_completo()
+                except ValueError:
+                    self.vista.mostrar_error()
                 return True
 
             if opcion == 5:
