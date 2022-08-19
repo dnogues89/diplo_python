@@ -35,3 +35,11 @@ class TestController(unittest.TestCase):
         app = controlador.Aplicacion(visual=vista_que_retorna_opcion_1, repositorio=repositorio)
         with self.assertRaises(ValueError):
             return_value = app.run()
+
+    @patch('builtins.input', lambda *args: 'abcde')
+    def test_option1_al_agregar_modelo_con_value_error(self):
+        repositorio = RepositorioSpy()
+        vista_que_retorna_opcion_1 = VistaMock(menu_value=1)
+        app = controlador.Aplicacion(visual=vista_que_retorna_opcion_1, repositorio=repositorio)
+        with self.assertRaises(ValueError):
+            return_value = app.run()
