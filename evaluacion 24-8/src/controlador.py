@@ -14,44 +14,56 @@ class Aplicacion:
         opcion = self.vista.menu()
         if re.match(patron, str(opcion)):
             if opcion == 1:
-                try:
-                    modelo, cantidad = input(
-                        "Ingresar Modelo y cantidad (Separado con un Espacio): "
-                    ).split(" ")    
-                    self.repositorio.alta(modelo, int(cantidad))
-                except ValueError:
-                    self.vista.mostrar_error()
-                return True
+                self._dar_de_alta()
 
             if opcion == 2:
-                self._mostrar_stock_completo()
-                id = int(input("Ingresar el ID del producto a eliminar. "))
-                self.repositorio.baja(id)
-                return True
+                self._dar_de_baja()
 
             if opcion == 3:
                 self._mostrar_stock_completo()
                 return True
 
             if opcion == 4:
-                self._mostrar_stock_completo()
-                try:
-                    id, modelo, cantidad = input(
-                        "Ingresar ID a moificar Modelo y cantidad (Separado con un Espacio): "
-                    ).split(" ")
-                    self.repositorio.modificar(int(id), modelo, int(cantidad))
-                    print("Modificacion realizada con exito")
-                    self._mostrar_stock_completo()
-                except ValueError:
-                    self.vista.mostrar_error()
-                return True
+                return self._modificar_stock()
 
             if opcion == 5:
-                self.vista.exit()
-                return False
+                return self._exit()
 
         print("El numero ingresado es incorrecto")
         return True
+
+    def _dar_de_alta(self):
+        try:
+            modelo, cantidad = input(
+                "Ingresar Modelo y cantidad (Separado con un Espacio): "
+            ).split(" ")    
+            self.repositorio.alta(modelo, int(cantidad))
+        except ValueError:
+            self.vista.mostrar_error()
+        return True
+
+    def _dar_de_baja(self):
+        self._mostrar_stock_completo()
+        id = int(input("Ingresar el ID del producto a eliminar. "))
+        self.repositorio.baja(id)
+        return True
+
+    def _modificar_stock(self):
+        self._mostrar_stock_completo()
+        try:
+            id, modelo, cantidad = input(
+                "Ingresar ID a moificar Modelo y cantidad (Separado con un Espacio): "
+            ).split(" ")
+            self.repositorio.modificar(int(id), modelo, int(cantidad))
+            print("Modificacion realizada con exito")
+            self._mostrar_stock_completo()
+        except ValueError:
+            self.vista.mostrar_error()
+        return True
+
+    def _exit(self):
+        self.vista.exit()
+        return False
     
     def _mostrar_stock_completo(self):
         lista = self.repositorio.consulta()
