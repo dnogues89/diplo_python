@@ -21,18 +21,15 @@ class VistaMock:
     def exit(self):
         self.exit_fue_invocado = True
 
-class RepositorioSpy:
-    def __init__(self):
-        self.alta_fue_invocado = False
-
-    def alta(self, modelo, cantidad):
-        self.alta_fue_invocado = True
-
 class RepositorioMock: 
     def __init__(self, stubbed_data = []):
         self.stubbed_data = stubbed_data
         self.baja_fue_invocado = False
         self.modificar_fue_invocado = False
+        self.alta_fue_invocado = False
+
+    def alta(self, modelo, cantidad):
+        self.alta_fue_invocado = True
 
     def consulta(self):
         return self.stubbed_data
