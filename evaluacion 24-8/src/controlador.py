@@ -15,10 +15,10 @@ class Aplicacion:
         opcion = self.vista.menu()
         if re.match(patron, str(opcion)):
             if opcion == 1:
-                modelo, cantidad = input(
-                    "Ingresar Modelo y cantidad (Separado con un Espacio): "
-                ).split(" ")    
                 try:
+                    modelo, cantidad = input(
+                        "Ingresar Modelo y cantidad (Separado con un Espacio): "
+                    ).split(" ")    
                     self.repositorio.alta(modelo, int(cantidad))
                 except ValueError:
                     self.vista.mostrar_error()
