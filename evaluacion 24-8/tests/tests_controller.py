@@ -24,6 +24,24 @@ class TestController(unittest.TestCase):
         self.assertTrue(return_value)
         self.assertTrue(vista_que_retorna_opcion_1.mostrar_error_fue_invocado)
 
+    @patch('builtins.input', lambda *args: '1')
+    def test_option2_devuelve_toda_la_informacion_de_base_de_datos_a_la_vista(self):
+        visual = VistaMock(menu_value=2)
+        repositorio = RepositorioMock()
+        app = controlador.Aplicacion(visual=visual, repositorio=repositorio)
+        return_value = app.run()
+        self.assertTrue(visual.lista_fue_invocado)
+        self.assertTrue(return_value)
+
+    @patch('builtins.input', lambda *args: '1') # Id ingresado es '1'
+    def test_option2_le_envia_a_dar_de_baja_al_repositorio_en_base_al_id_ingresado(self):
+        visual = VistaMock(menu_value=2)
+        repositorio = RepositorioMock()
+        app = controlador.Aplicacion(visual=visual, repositorio=repositorio)
+        return_value = app.run()
+        self.assertTrue(repositorio.baja_fue_invocado)
+        self.assertTrue(return_value)
+
     def test_option3_devuelve_toda_la_informacion_de_base_de_datos_a_la_vista(self):
         visual = VistaMock(menu_value=3)
         data_de_stock = [1, "abc", 123]

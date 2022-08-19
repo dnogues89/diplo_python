@@ -25,6 +25,10 @@ class RepositorioSpy:
 class RepositorioMock: 
     def __init__(self, stubbed_data = []):
         self.stubbed_data = stubbed_data
+        self.baja_fue_invocado = False
 
     def consulta(self):
         return self.stubbed_data
+
+    def baja(self, id):
+        self.baja_fue_invocado = True
