@@ -16,7 +16,7 @@ class Visual:
         print("\n\n")
         return int(opcion)
 
-    def lista(self, lista):
+    def consulta(self, lista):
         print("\n\n")
         print("*" * 20 + "  -BASE DE DATOS-  " + "*" * 20)
         print("{:<8} {:<15} {:<10}".format("Id", "Modelo", "Cantidad"))
