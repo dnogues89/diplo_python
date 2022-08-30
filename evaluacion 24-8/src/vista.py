@@ -1,4 +1,6 @@
 import os
+import subprocess
+
 
 class Visual:
     def menu(self):
@@ -10,7 +12,7 @@ class Visual:
         print("4 - Modificar Producto")
         print("5 - Finalizar")
         print("#" * 20 + " MENU " + "#" * 20)
-        opcion = input("Coloque la opcion deseada: ")
+        opcion = self.input_data_msg("Coloque la opcion deseada: ")
         print("\n\n")
         return int(opcion)
 
@@ -31,6 +33,13 @@ class Visual:
     def mostrar_error(self):
         os.system("clear")
         print("Hubo un problema en el ingreso de datos")
+
+    def input_data_msg(self, msg: str):
+        return input(msg)
+
+    def limpiar_consola(self):
+        subprocess.run("clear")
+
 
 if __name__ == "__main__":
     pass

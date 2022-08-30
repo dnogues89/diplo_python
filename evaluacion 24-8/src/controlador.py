@@ -11,6 +11,7 @@ class Aplicacion:
 
     def run(self):
         patron = "[0-9]+"
+        self.vista.limpiar_consola()
         opcion = self.vista.menu()
         if re.match(patron, str(opcion)):
             if opcion == 1:
@@ -28,15 +29,13 @@ class Aplicacion:
 
             if opcion == 5:
                 return self._exit()
-
-        print("El numero ingresado es incorrecto")
         return True
 
     def _dar_de_alta(self):
         try:
-            modelo, cantidad = input(
+            modelo, cantidad = self.vista.input_data_msg(
                 "Ingresar Modelo y cantidad (Separado con un Espacio): "
-            ).split(" ")    
+            ).split(" ")
             self.repositorio.alta(modelo, int(cantidad))
         except ValueError:
             self.vista.mostrar_error()
@@ -44,18 +43,18 @@ class Aplicacion:
 
     def _dar_de_baja(self):
         self._mostrar_stock_completo()
-        id = int(input("Ingresar el ID del producto a eliminar. "))
+        id = int(self.vista.input_data_msg("Ingresar el ID del producto a eliminar. "))
         self.repositorio.baja(id)
         return True
 
     def _modificar_stock(self):
         self._mostrar_stock_completo()
         try:
-            id, modelo, cantidad = input(
+            id, modelo, cantidad = self.vista.input_data_msg(
                 "Ingresar ID a moificar Modelo y cantidad (Separado con un Espacio): "
             ).split(" ")
             self.repositorio.modificar(int(id), modelo, int(cantidad))
-            print("Modificacion realizada con exito")
+            self.vista.limpiar_consola()
             self._mostrar_stock_completo()
         except ValueError:
             self.vista.mostrar_error()
@@ -64,8 +63,9 @@ class Aplicacion:
     def _exit(self):
         self.vista.exit()
         return False
-    
+
     def _mostrar_stock_completo(self):
+        self.vista.limpiar_consola()
         lista = self.repositorio.consulta()
         self.vista.lista(lista)
 
