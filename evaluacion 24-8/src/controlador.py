@@ -8,10 +8,10 @@ class Aplicacion:
     def __init__(self, visual: Visual, repositorio: Repositorio):
         self.vista = visual
         self.repositorio = repositorio
+        self.vista.limpiar_consola()
 
     def run(self):
         patron = "[0-9]+"
-        self.vista.limpiar_consola()
         opcion = self.vista.menu()
         if re.match(patron, str(opcion)):
             if opcion == 1:
@@ -67,7 +67,7 @@ class Aplicacion:
     def _mostrar_stock_completo(self):
         self.vista.limpiar_consola()
         lista = self.repositorio.consulta()
-        self.vista.lista(lista)
+        self.vista.consulta(lista)
 
 
 if __name__ == "__main__":
