@@ -21,24 +21,24 @@ except:
 
 
 class Repositorio:
-    def alta(modelo, cantidad):
+    def alta(self, modelo, cantidad):
         alta = Stock()
         alta.modelo = modelo
         alta.cantidad = cantidad
         alta.save()
         return alta
 
-    def baja(id):
+    def baja(self, id):
         baja = Stock.get(Stock.id == id)
         baja.delete_instance()
         return True
 
-    def modificar(id, modelo, cantidad):
+    def modificar(self, id, modelo, cantidad):
         modificar = Stock.update(modelo=modelo, cantidad=cantidad).where(Stock.id == id)
         modificar.execute()
         return True
 
-    def consulta():
+    def consulta(self):
         lista = []
         for row in Stock.select():
             lista.append([row.id, row.modelo, row.cantidad])
